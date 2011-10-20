@@ -14,8 +14,34 @@ BEGIN {
 }
 
 use Carp 0 qw(croak carp);
+use IO::Handle 0 qw();
 use Scalar::Util 0 qw(blessed refaddr);
-use XML::LibXML 1.62 qw();
+use XML::LibXML 1.62 qw(:ns);
+
+use base qw(Pragmatic);
+
+BEGIN
+{
+	our %PRAGMATA = (
+		io => sub {
+					*IO::Handle::print_xml = sub ($$;$)
+					{
+						my ($handle, $xml, $indent) = @_;
+						unless (blessed($xml))
+						{
+							local $@ = undef;
+							eval { $xml = XML::LibXML->new->parse_string($xml); 1; }
+								or croak("Could not parse XML: $@");
+						}
+						$indent //= 0;
+						$handle->print(__PACKAGE__->pretty_print($xml, $indent)->toString);
+					};
+				},
+		);
+	our @EXPORT      = qw();
+	our @EXPORT_OK   = qw(print_xml);
+	our %EXPORT_TAGS = ();
+}
 
 our $Whitespace = qr/[\x20\t\r\n]/; # @@TODO need to check XML spec
 
@@ -226,6 +252,7 @@ sub pretty_print
 	
 	$self->strip_whitespace($node);
 	$self->indent($node, $indent_level);
+	return $node;
 }
 
 sub _run_checks
@@ -306,9 +333,32 @@ sub element_preserves_whitespace
 	my ($self, $node) = @_;
 	$self = $self->_ensure_self;
 
-	return undef unless blessed($node) && $node->isa('XML::LibXML::Element');
+	return undef unless blessed($node); 
+	return TRUE if $node->nodeName eq '#comment';
+	return TRUE if $node->isa('XML::LibXML::PI');
+	
 	return TRUE if $self->_run_checks(preserves_whitespace => $node);
-	return FALSE;
+	
+	return TRUE
+		if $node->isa('XML::LibXML::Element')
+		&& $node->hasAttributeNS(XML_XML_NS, 'space')
+		&& lc $node->getAttributeNS(XML_XML_NS, 'space') eq 'preserve'; 
+	
+	return FALSE if $node->isa('XML::LibXML::Element');
+	return undef;
+}
+
+sub print_xml ($;$)
+{
+	my ($xml, $indent) = @_;
+	unless (blessed($xml))
+	{
+		local $@ = undef;
+		eval { $xml = XML::LibXML->new->parse_string($xml); 1; }
+			or croak("Could not parse XML: $@");
+	}
+	$indent //= 0;
+	print __PACKAGE__->pretty_print($xml, $indent)->toString;
 }
 
 TRUE;
@@ -405,17 +455,27 @@ element is not considered superfluous. Runs of multiple whitespace
 characters are replaced with a single space. Whitespace is not changed
 within an element that preserves whitespace.
 
+The node is modified in place.
+
 =item C<< indent($node, $level) >>
 
 Indents the node to a certain indentation level, and its direct children to
 C<< $level + 1 >>, grandchildren to C<< $level + 2 >>, etc. Typically you'd
 just want to indent the root node to level 0.
 
-Elements that preserve whitespace are not touched.
+The node is modified in place.
+
+Elements that preserve whitespace are not changed.
 
 =item C<< pretty_print($node, $level) >>
 
-Strip whitespace and indent.
+Strip whitespace and indent. The node is modified in place and returned.
+
+Example use as a class method:
+
+ print XML::LibXML::PrettyPrint
+   ->pretty_print(XML::LibXML->new->parse_string($XML))
+   ->toString;
 
 =item C<< indent_string($level) >>
 
@@ -441,6 +501,42 @@ Boolean indicating whether the contents of the element have significant
 whitespace that needs preserving.
 
 Returns undef if $node is not an C<XML::LibXML::Element>. 
+
+=back
+
+=head2 Functions
+
+=over
+
+=item C<< print_xml $xml >>
+
+Given an XML string or an XML::LibXML::Node object, prints it nicely.
+
+This function is not exported by default, but can be requested:
+
+ use XML::LibXML::PrettyPrint 0.001 qw(print_xml);
+
+Use like this:
+
+ print_xml '<foo> <bar> </bar> </foo>';
+
+=item C<< IO::Handle::print_xml($handle, $xml) >>
+
+Partly experimental, partly mental. You can enable this feature like this:
+
+ use XML::LibXML::PrettyPrint 0.001 qw(-io);
+
+And that will allow stuff like this to work:
+
+ open LOG, '>mylog.xml';
+ print_xml LOG '<foo> <bar> </bar> </foo>';
+ close LOG;
+
+ open my $log, '>otherlog.xml';
+ print_xml $log '<foo> <bar> </bar> </foo>';
+ close $log;
+
+ print_xml STDERR '<foo> <bar> </bar> </foo>';
 
 =back
 
