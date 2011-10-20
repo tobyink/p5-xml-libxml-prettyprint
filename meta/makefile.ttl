@@ -6,7 +6,9 @@
 	:perl_version_from _:main ;
 	:version_from _:main ;
 	:readme_from _:main ;
-	:test_requires "Test::More 0.61" ;
+	:test_requires
+		"Test::Warn 0.20" ,
+		"Test::More 0.61" ;
 	:requires 
 		"Scalar::Util" ,
 		"Carp" ,

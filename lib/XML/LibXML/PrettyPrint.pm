@@ -6,10 +6,9 @@ use constant { FALSE => 0, TRUE => 1 };
 use constant { EL_BLOCK => 1, EL_COMPACT => 2, EL_INLINE => 3};
 use utf8;
 
-BEGIN {
+BEGIN
+{
 	$XML::LibXML::PrettyPrint::AUTHORITY = 'cpan:TOBYINK';
-}
-BEGIN {
 	$XML::LibXML::PrettyPrint::VERSION   = '0.001';
 }
 
@@ -39,8 +38,12 @@ BEGIN
 				},
 		);
 	our @EXPORT      = qw();
-	our @EXPORT_OK   = qw(print_xml);
-	our %EXPORT_TAGS = ();
+	our @EXPORT_OK   = qw(print_xml EL_BLOCK EL_COMPACT EL_INLINE);
+	our %EXPORT_TAGS = (
+		'all'       => \@EXPORT_OK,
+		'default'   => \@EXPORT,
+		'constants' => [qw(EL_BLOCK EL_COMPACT EL_INLINE)],
+		);
 }
 
 our $Whitespace = qr/[\x20\t\r\n]/; # @@TODO need to check XML spec
@@ -487,10 +490,6 @@ such as having varying levels of indentation.
 
 Returns the string that would be used to begin a new line.
 
-=item C<< new_line >>
-
-Returns the string that would be used to begin a new line.
-
 =item C<< element_category($node) >>
 
 Returns EL_INLINE, EL_BLOCK, EL_COMPACT or undef.
@@ -537,6 +536,22 @@ And that will allow stuff like this to work:
  close $log;
 
  print_xml STDERR '<foo> <bar> </bar> </foo>';
+
+=back
+
+=head2 Constants
+
+These can be exported:
+
+ use XML::LibXML::PrettyPrint 0.001 qw(:constants);
+
+=over
+
+=item C<EL_BLOCK>
+
+=item C<EL_COMPACT>
+
+=item C<EL_INLINE>
 
 =back
 
@@ -591,9 +606,10 @@ The third C<< <li> >> element is indented like a block element because it contai
 a block C<< <ul> >> element. The other C<< <li> >> elements do not have their
 contents indented, because they contain only inline content.
 
-Elements default to being block and not preserving whitespace, but you can specify
-particular elements as inline, compact or whitespace preserving by passing node
-names or callbacks to the constructor.
+Elements default to being block, but you can specify particular elements as
+inline or compact by passing node names or callbacks to the constructor. Elements
+default to not preserving whitespace unless they have an C<< xml:space="preserve" >>
+attribute, but again you can use the constructor to change this.
 
 Comments and processing instructions default to being compact, but you can make
 particular comments or PIs inline or block by passing appropriate callbacks to
@@ -611,9 +627,15 @@ L<http://rt.cpan.org/Dist/Display.html?Queue=XML-LibXML-PrettyPrint>.
 
 =head1 SEE ALSO
 
-L<XML::LibXML>, L<HTML::HTML5::Writer>.
+Related: L<XML::LibXML>, L<HTML::HTML5::Writer>.
 
-L<http://www.derkarl.org/why_to_tabs.html>.
+L<XML::Tidy> - similar, but based on L<XML::XPath>. Doesn't differentiate
+between inline and block elements.
+
+L<XML::Filter::Reindent> - similar again, based on L<XML::Parser>. Doesn't
+differentiate between inline and block elements.
+
+Sermon: L<http://www.derkarl.org/why_to_tabs.html>. Read it.
 
 =head1 AUTHOR
 

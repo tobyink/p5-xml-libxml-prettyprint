@@ -1,4 +1,5 @@
-use Test::More tests=>11;
+use Test::More tests=>12;
+use Test::Warn;
 use XML::LibXML;
 use XML::LibXML::PrettyPrint;
 
@@ -15,10 +16,14 @@ is(indent('<foo>   <bar />   </foo>'),
 	"<foo>\n\t<bar/>\n</foo>",
 	'simple test');
 
-is(indent('<foo>   <bar />   </foo>', indent_string=>'~'),
-	"<foo>\n~<bar/>\n</foo>",
-	'indent_string works');
-
+warning_like
+	{
+		is(indent('<foo>   <bar />   </foo>', indent_string=>'~'),
+			"<foo>\n~<bar/>\n</foo>",
+			'indent_string works');
+	}
+	qr/Non\-whitespace indent_string supplied/i, 'weird indent_string raises warning';
+	
 is(indent('<foo>abba<bar bum="1"><quux>xyzzy<baz/>xyzzy<baz><gurgle/></baz></quux><quux/></bar>abba<bar />abba</foo>'),
 	do { $_ = <<OUTPUT; chomp; $_; }, 'complicated example works');
 <foo>
