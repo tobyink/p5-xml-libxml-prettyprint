@@ -10,6 +10,7 @@
 		"Test::Warn 0.20" ,
 		"Test::More 0.61" ;
 	:requires 
+		"Pragmatic" ,
 		"Scalar::Util" ,
 		"Carp" ,
 		"IO::Handle" ,

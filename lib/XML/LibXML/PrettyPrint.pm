@@ -9,7 +9,7 @@ use utf8;
 BEGIN
 {
 	$XML::LibXML::PrettyPrint::AUTHORITY = 'cpan:TOBYINK';
-	$XML::LibXML::PrettyPrint::VERSION   = '0.001';
+	$XML::LibXML::PrettyPrint::VERSION   = '0.002';
 }
 
 use Carp 0 qw(croak carp);
@@ -77,17 +77,27 @@ sub new
 	                 tr track ul];
 	my @pre     = qw[plaintext output pre script style textarea xmp];
 	
-	my %elements = (
-		block    => \@block,
-		compact  => \@compact,
-		inline   => \@inline,
-		preserves_whitespace => \@pre,
-		);
+	my $rdfa_lit_content = sub
+	{
+		my ($el) = @_;
+		return TRUE
+			if ($el->hasAttribute('property') and not $el->hasAttribute('content'));
+		return undef;
+	};
 	
 	sub new_for_html
 	{
 		my ($class, %options) = @_;
-		$class->new(%options, element => \%elements)
+		
+		return $class->new(
+			%options,
+			element => {
+				block    => [@block],
+				compact  => [@compact],
+				inline   => [@inline],
+				preserves_whitespace => [@pre, $rdfa_lit_content],
+				},
+			);
 	}
 }
 
