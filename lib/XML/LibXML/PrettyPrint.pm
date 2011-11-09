@@ -17,7 +17,7 @@ use IO::Handle 0 qw();
 use Scalar::Util 0 qw(blessed refaddr);
 use XML::LibXML 1.62 qw(:ns);
 
-use base qw(Pragmatic);
+use parent qw(Pragmatic);
 
 BEGIN
 {
