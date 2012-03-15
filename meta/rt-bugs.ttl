@@ -1,0 +1,37 @@
+@prefix dbug: <http://ontologi.es/doap-bugs#> .
+@prefix dc: <http://purl.org/dc/terms/> .
+@prefix doap: <http://usefulinc.com/ns/doap#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix prio: <http://purl.org/NET/cpan-uri/rt/priority/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rt: <http://purl.org/NET/cpan-uri/rt/ticket/> .
+@prefix status: <http://purl.org/NET/cpan-uri/rt/status/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+_:r1331848973r0 a foaf:Agent ;
+	foaf:mbox <mailto:rr@yopmail.com> .
+_:r1331848973r1 a foaf:Agent ;
+	foaf:nick "TOBYINK" .
+_:r1331848973r2 a foaf:Agent ;
+	foaf:mbox <mailto:dhorne@cpan.org> .
+_:r1331848973r3 a foaf:Agent ;
+	foaf:nick "Nobody" .
+<http://purl.org/NET/cpan-uri/dist/XML-LibXML-PrettyPrint/project> dbug:issue <http://purl.org/NET/cpan-uri/rt/ticket/71821>, <http://purl.org/NET/cpan-uri/rt/ticket/75752> .
+<http://purl.org/NET/cpan-uri/rt/ticket/71821> dbug:assignee _:r1331848973r1 ;
+	dbug:id "71821"^^xsd:string ;
+	dbug:page <https://rt.cpan.org/Ticket/Display.html?id=71821> ;
+	dbug:reporter _:r1331848973r0 ;
+	dbug:status status:rejected ;
+	dc:created "2011-10-20T20:20:37"^^xsd:dateTime ;
+	dc:modified "2011-10-21T01:32:56"^^xsd:dateTime ;
+	a dbug:Issue ;
+	rdfs:label "Not memory-efficient for large files" .
+<http://purl.org/NET/cpan-uri/rt/ticket/75752> dbug:assignee _:r1331848973r3 ;
+	dbug:id "75752"^^xsd:string ;
+	dbug:page <https://rt.cpan.org/Ticket/Display.html?id=75752> ;
+	dbug:reporter _:r1331848973r2 ;
+	dbug:status status:resolved ;
+	dc:created "2012-03-13T22:47:25"^^xsd:dateTime ;
+	dc:modified "2012-03-15T21:58:55"^^xsd:dateTime ;
+	a dbug:Issue ;
+	rdfs:label "Warning on CDATA" .
