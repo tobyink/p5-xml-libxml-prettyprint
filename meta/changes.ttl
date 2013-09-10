@@ -38,3 +38,14 @@ dist:v_0-003
 		dcs:versus dist:v_0-002 ;
 		dcs:item   [ a dcs:Bugfix ; rdfs:label "Handle CDATA nodes."@en ; dcs:fixes <http://purl.org/NET/cpan-uri/rt/ticket/75752> ] ;
 		] .
+
+dist:project :release dist:v_0-004 .
+dist:v_0-004
+	a               :Version ;
+	dc:issued       "2013-09-10"^^xsd:date ;
+	:revision       "0.004"^^xsd:string ;
+	:file-release   <http://backpan.cpan.org/authors/id/T/TO/TOBYINK/XML-LibXML-PrettyPrint-0.004.tar.gz> ;
+	dcs:changeset [
+		dcs:versus dist:v_0-003 ;
+		dcs:item   [ rdfs:label "In HTML, the <dl> element should be block, not compact."@en ] ;
+	] .

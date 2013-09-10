@@ -9,7 +9,7 @@ use utf8;
 BEGIN
 {
 	$XML::LibXML::PrettyPrint::AUTHORITY = 'cpan:TOBYINK';
-	$XML::LibXML::PrettyPrint::VERSION   = '0.003';
+	$XML::LibXML::PrettyPrint::VERSION   = '0.004';
 }
 
 use Carp 0 qw(croak carp);
@@ -654,7 +654,7 @@ Toby Inkster E<lt>tobyink@cpan.orgE<gt>.
 
 =head1 COPYRIGHT AND LICENCE
 
-This software is copyright (c) 2011, 2013 by Toby Inkster.
+This software is copyright (c) 2011-2013 by Toby Inkster.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
