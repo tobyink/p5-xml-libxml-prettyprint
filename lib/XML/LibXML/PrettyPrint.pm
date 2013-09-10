@@ -62,7 +62,7 @@ sub new
 
 {
 	my @compact = qw[area audio base basefont bgsound br button canvas
-	                 caption col command dd details dl dt embed figcaption
+	                 caption col command dd details dt embed figcaption
 	                 frame h1 h2 h3 h4 h5 h6 hr iframe img input isindex
 	                 keygen legend li link meta option p param summary td
 	                 th title video];
@@ -74,7 +74,7 @@ sub new
 	                 form frameset head header hgroup html ins listing map
 	                 marquee menu nav noembed noframes noscript object ol
 	                 optgroup select section source table tbody tfoot thead
-	                 tr track ul];
+	                 tr track ul dl];
 	my @pre     = qw[plaintext output pre script style textarea xmp];
 	
 	my $rdfa_lit_content = sub
@@ -654,7 +654,7 @@ Toby Inkster E<lt>tobyink@cpan.orgE<gt>.
 
 =head1 COPYRIGHT AND LICENCE
 
-This software is copyright (c) 2011 by Toby Inkster.
+This software is copyright (c) 2011, 2013 by Toby Inkster.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
