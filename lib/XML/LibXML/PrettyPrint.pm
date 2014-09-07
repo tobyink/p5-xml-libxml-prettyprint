@@ -1,10 +1,16 @@
+use 5.010;
+use strict;
+use warnings;
+use utf8;
+
+no warnings qw( once void uninitialized );
+
+use IO::Handle 0 qw();
+
 package XML::LibXML::PrettyPrint;
 
-use 5.010;
-use common::sense;
 use constant { FALSE => 0, TRUE => 1 };
 use constant { EL_BLOCK => 1, EL_COMPACT => 2, EL_INLINE => 3};
-use utf8;
 
 BEGIN
 {
@@ -13,7 +19,6 @@ BEGIN
 }
 
 use Carp 0 qw(croak carp);
-use IO::Handle 0 qw();
 use Scalar::Util 0 qw(blessed refaddr);
 use XML::LibXML 1.62 qw(:ns);
 
