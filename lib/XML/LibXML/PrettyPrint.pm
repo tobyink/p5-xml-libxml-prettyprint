@@ -1,4 +1,4 @@
-use 5.010;
+use 5.008001;
 use strict;
 use warnings;
 use utf8;
@@ -37,7 +37,7 @@ our %EXPORT_TAGS = (
 				eval { $xml = XML::LibXML->new->parse_string($xml); 1; }
 					or croak("Could not parse XML: $@");
 			}
-			$indent //= 0;
+			$indent = 0 unless defined $indent;
 			$handle->print(__PACKAGE__->pretty_print($xml, $indent)->toString);
 		};
 		return;
@@ -49,7 +49,7 @@ our $Whitespace = qr/[\x20\t\r\n]/; # @@TODO need to check XML spec
 sub new
 {
 	my ($class, %options) = @_;
-	$options{element} //= delete $options{elements};
+	$options{element} = delete $options{elements} unless defined $options{element};
 	if (defined $options{indent_string})
 	{
 		carp("Non-whitespace indent_string supplied")
@@ -180,7 +180,7 @@ sub indent
 	my ($self, $node, $indent_level) = @_;
 	$self = $self->_ensure_self;	
 	
-	$indent_level //= 0;
+	$indent_level = 0 unless defined $indent_level;
 
 	$self->indent($node->documentElement, $indent_level)
 		if blessed($node) && $node->nodeName eq '#document';
@@ -311,7 +311,10 @@ sub indent_string
 	my ($self, $level) = @_;
 	$self = $self->_ensure_self;
 	
-	return ($self->{indent_string} // "\t") x $level;
+	$self->{indent_string} = "\t"
+		unless defined $self->{indent_string};
+	
+	$self->{indent_string} x $level;
 }
 
 sub new_line
@@ -319,7 +322,10 @@ sub new_line
 	my ($self, $level) = @_;
 	$self = $self->_ensure_self;
 	
-	return $self->{new_line} // "\n";
+	$self->{new_line} = "\n"
+		unless defined $self->{new_line};
+	
+	$self->{new_line};
 }
 
 sub element_category
@@ -369,7 +375,7 @@ sub print_xml ($;$)
 		eval { $xml = XML::LibXML->new->parse_string($xml); 1; }
 			or croak("Could not parse XML: $@");
 	}
-	$indent //= 0;
+	$indent = 0 unless defined $indent;
 	print __PACKAGE__->pretty_print($xml, $indent)->toString;
 }
 
