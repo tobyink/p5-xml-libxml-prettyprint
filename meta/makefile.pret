@@ -3,8 +3,8 @@
 @prefix : <http://ontologi.es/doap-deps#> .
 
 `XML-LibXML-PrettyPrint`
-	:test-requirement       [ :on "Test::More 0.61"^^:CpanId ];
-	:test-requirement       [ :on "Test::Warn"^^:CpanId ];
+	:test-requirement       [ :on "Test::More 0.96"^^:CpanId ];
+	:test-requirement       [ :on "Test::Warnings"^^:CpanId ];
 	:runtime-requirement    [ :on "perl 5.008001"^^:CpanId ];
 	:runtime-requirement    [ :on "Exporter::Tiny"^^:CpanId ];
 	:runtime-requirement    [ :on "XML::LibXML 1.62"^^:CpanId ].

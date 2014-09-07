@@ -1,6 +1,7 @@
 use strict;
-use Test::Warn;
-use Test::More tests => 2;
+use warnings;
+use Test::More;
+use Test::Warnings qw(warnings);
 
 use XML::LibXML;
 use XML::LibXML::PrettyPrint;
@@ -14,12 +15,13 @@ my $cdata = $doc->createCDATASection($cdata_string);
 $doc->addChild($node);
 $node->addChild($cdata);
 
-warnings_are
-{
+my @warnings = warnings {
 	XML::LibXML::PrettyPrint
 		-> new(indent_string => "\t")
 		-> pretty_print($doc)
-}
-	[], 'Should not warn on CDATA';
+};
 
+is_deeply(\@warnings, [], 'Should not warn on CDATA');
 is($cdata->data, $cdata_string, 'CDATA contents should be left untouched.');
+
+done_testing;

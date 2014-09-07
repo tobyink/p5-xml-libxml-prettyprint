@@ -1,4 +1,8 @@
-use Test::More tests=>16;
+use strict;
+use warnings;
+use Test::More;
+use Test::Warnings;
+
 use XML::LibXML;
 use XML::LibXML::PrettyPrint;
 
@@ -73,3 +77,4 @@ is(strip("<foo>  <!-- comment -->  </foo>"),
 	'<foo><!-- comment --></foo>',
 	'with a comment');
 	
+done_testing;

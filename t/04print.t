@@ -1,4 +1,8 @@
-use Test::More tests => 3;
+use strict;
+use warnings;
+use Test::More;
+use Test::Warnings;
+
 use XML::LibXML::PrettyPrint 0.001 qw(-io);
 
 my $FN = 'print_xml.tmp';
@@ -57,3 +61,4 @@ DATA
 	unlink $FN;
 }
 
+done_testing;
