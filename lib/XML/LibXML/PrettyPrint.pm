@@ -15,7 +15,7 @@ use constant { EL_BLOCK => 1, EL_COMPACT => 2, EL_INLINE => 3};
 BEGIN
 {
 	$XML::LibXML::PrettyPrint::AUTHORITY = 'cpan:TOBYINK';
-	$XML::LibXML::PrettyPrint::VERSION   = '0.005';
+	$XML::LibXML::PrettyPrint::VERSION   = '0.006';
 }
 
 use Carp 0 qw(croak carp);

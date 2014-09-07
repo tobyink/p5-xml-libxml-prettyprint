@@ -62,3 +62,17 @@ dist:v_0-005
 		dcs:item   [ rdfs:label "use Dist::Inkt."@en; a dcs:Packaging ] ;
 		dcs:item   [ rdfs:label "Add repo link."@en; a dcs:Packaging ] ;
 	] .
+
+dist:project :release dist:v_0-006 .
+dist:v_0-006
+	a               :Version ;
+	dc:issued       "2014-09-07"^^xsd:date ;
+	:revision       "0.006"^^xsd:string ;
+	:file-release   <http://backpan.cpan.org/authors/id/T/TO/TOBYINK/XML-LibXML-PrettyPrint-0.006.tar.gz> ;
+	dcs:changeset [
+		dcs:versus dist:v_0-005 ;
+		dcs:item   [ rdfs:label "Backport to Perl 5.8.1."@en; a dcs:Change ] ;
+		dcs:item   [ rdfs:label "Rewrite test suite to use Test::Warnings instead of Test::Warn."@en; a dcs:Tests ] ;
+		dcs:item   [ rdfs:label "Inherit from Exporter::Tiny instead of Pragmatic."@en; a dcs:Change ] ;
+		dcs:item   [ rdfs:label "Don't use parent.pm to establish inheritance."@en; a dcs:Change ] ;
+	] .
