@@ -22,34 +22,27 @@ use Carp 0 qw(croak carp);
 use Scalar::Util 0 qw(blessed refaddr);
 use XML::LibXML 1.62 qw(:ns);
 
-use parent qw(Pragmatic);
+use Exporter::Tiny ();
 
-BEGIN
-{
-	our %PRAGMATA = (
-		io => sub {
-					*IO::Handle::print_xml = sub ($$;$)
-					{
-						my ($handle, $xml, $indent) = @_;
-						unless (blessed($xml))
-						{
-							local $@ = undef;
-							eval { $xml = XML::LibXML->new->parse_string($xml); 1; }
-								or croak("Could not parse XML: $@");
-						}
-						$indent //= 0;
-						$handle->print(__PACKAGE__->pretty_print($xml, $indent)->toString);
-					};
-				},
-		);
-	our @EXPORT      = qw();
-	our @EXPORT_OK   = qw(print_xml EL_BLOCK EL_COMPACT EL_INLINE);
-	our %EXPORT_TAGS = (
-		'all'       => \@EXPORT_OK,
-		'default'   => \@EXPORT,
-		'constants' => [qw(EL_BLOCK EL_COMPACT EL_INLINE)],
-		);
-}
+our @ISA         = 'Exporter::Tiny';
+our @EXPORT      = qw();
+our @EXPORT_OK   = qw(print_xml EL_BLOCK EL_COMPACT EL_INLINE);
+our %EXPORT_TAGS = (
+	constants => [qw(EL_BLOCK EL_COMPACT EL_INLINE)],
+	io        => sub {
+		*IO::Handle::print_xml = sub ($$;$) {
+			my ($handle, $xml, $indent) = @_;
+			unless (blessed($xml)) {
+				local $@ = undef;
+				eval { $xml = XML::LibXML->new->parse_string($xml); 1; }
+					or croak("Could not parse XML: $@");
+			}
+			$indent //= 0;
+			$handle->print(__PACKAGE__->pretty_print($xml, $indent)->toString);
+		};
+		return;
+	},
+);
 
 our $Whitespace = qr/[\x20\t\r\n]/; # @@TODO need to check XML spec
 
