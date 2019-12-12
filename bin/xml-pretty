@@ -1,7 +1,10 @@
 #!/usr/bin/env perl
 
 use XML::LibXML::PrettyPrint qw(print_xml);
-print_xml <>;
+{
+    local $/ = undef;
+    print_xml <>;
+}
 
 __END__
 
